@@ -11,7 +11,15 @@ uint8 g_fore_color = WHITE, g_back_color = BLACK;
 // change CALC_SLEEP following to greater than 4
 // for qemu it is better for 1
 #define CALC_SLEEP 1
+  
+void init_vga_CH(uint8 fore_color)
+{
+  vga_buffer = (uint16*)VGA_ADDRESS;
+  g_fore_color = fore_color;
+  
+}
 
+   
 
 
 uint16 vga_entry(unsigned char ch, uint8 fore_color, uint8 back_color) 
@@ -29,6 +37,11 @@ uint16 vga_entry(unsigned char ch, uint8 fore_color, uint8 back_color)
 
   return ax;
 }
+
+  
+
+
+
 
 void clear_vga_buffer(uint16 **buffer, uint8 fore_color, uint8 back_color)
 {
@@ -193,8 +206,11 @@ char getchar()
 void display_menu()
 {
   gotoxy(25, 0);
+                                            init_vga_CH(   YELLOW);
   print_string("\n              *******************  Devious Programmer OS :)  *****************");
+  init_vga_CH(    BRIGHT_MAGENTA);
   print_string("\n\n                            + Our Calculator Application +");
+   init_vga_CH( BRIGHT_CYAN);  
   print_string("\n\n Chosse any operation from Menu  +/-*");
   print_string("\n  1- Addition");
   print_string("\n  2- Substraction");
@@ -204,7 +220,9 @@ void display_menu()
 }
 
 void read_two_numbers(int* num1, int *num2)
-{
+{        
+
+        init_vga_CH(  BRIGHT_GREEN);
   print_string("Enter first number : ");
   sleep(CALC_SLEEP);
   *num1 = read_int();
@@ -218,7 +236,10 @@ void calculator()
   int choice, num1, num2;
   while(1){
     display_menu();
+    
+        init_vga_CH(  BRIGHT_GREEN);
     print_string("\n\nEnter your choice : ");
+
     choice = read_int();
     switch(choice){
       case 1:
@@ -253,62 +274,213 @@ void calculator()
         display();
         return;
       default:
+init_vga_CH(WHITE);
         print_string("\nInvalid choice...!");
         break;
     }
+
     print_string("\n\nPress any key to reload screen...");
     getchar();
     clear_screen();
   }
 }
+void weight(){
+
+	int Weight ,Height;
+         print_string("                                  <<< knowing your healthy >>>");
+        init_vga_CH(  BRIGHT_GREEN);
+	print_string("\n\n\n\n\nHow many your Weight : ");
+	sleep(CALC_SLEEP);
+	Weight = read_int();
+
+        init_vga_CH( WHITE);
+	print_string("\nHow many your Height : ");
+	sleep(CALC_SLEEP);
+	Height = read_int();
+
+	
+	double mult = Height * Height;
+	double BMI = Weight / mult;
+     
+        init_vga_CH(  BRIGHT_GREEN);
+	print_string("\n   Your Weight = ");
+	print_int(Weight);
+	print_string("  Kg");
+ init_vga_CH( WHITE);   
+	print_string("\n   Your Height = ");
+	print_int( Height);
+	print_string(" m");
+
+	  if(BMI < 18.5){
+ init_vga_CH( BRIGHT_CYAN);
+            print_string("\n\n              #...you are in : Under Wieght ):");
+        }else if (BMI > 25){
+            print_string("\n\n              # ...you are in : Over Wieght ):");
+        }else{
+            print_string("\n\n              $... you are in : Healthy Wieght :) ");
+        }
+
+    init_vga_CH(WHITE);
+      print_string("\n\n\n\n\n\n\n Enter 1 to back >> ");
+	int a;
+	sleep(CALC_SLEEP);
+	a = read_int();
+
+	switch(a){
+	
+			
+	
+		case 1:
+		        print_string("\n\nExiting from Weight...");
+        			 sleep(CALC_SLEEP*3);
+        		clear_screen();
+        		display();
+			break;
+    	      default:
+      			 print_string("\nInvalid choice...!");
+       			 break;
+		}
+}
+void decToBinary(int n) 
+{ 
+    // array to store binary number 
+    int binaryNum[32]; 
+  
+    // counter for binary array 
+    int i = 0; 
+    while (n > 0) { 
+  
+        // storing remainder in binary array 
+        binaryNum[i] = n % 2; 
+        n = n / 2; 
+        i++; 
+    } 
+  
+    // printing binary array in reverse order 
+    for (int j = i - 1; j >= 0; j--) 
+	print_int( binaryNum[j]);
+      //  cout << binaryNum[j]; 
+} 
+  void binary(){
+			int n ; 
+                                 init_vga_CH( YELLOW);
+ 
+                 	 print_string("\n                          <<   Convert to binary  >> ");   
+        init_vga_CH(  BRIGHT_GREEN);
+			 print_string("\n\n\n\nEnter number : ");
+			 sleep(CALC_SLEEP);
+			 n = read_int();
+              print_string("\n the binary number is : " );
+      decToBinary(n); 
+			 init_vga_CH(WHITE);
+   		          print_string("\n\n\n\n\n\nEnter 1 to back >> ");
+	int x;
+	sleep(CALC_SLEEP);
+	x = read_int();
+
+	switch(x){
+
+		case 1:
+		        print_string("\nExiting from Weight...");
+        			 sleep(CALC_SLEEP*3);
+        		clear_screen();
+        		display();
+			break;
+    	      default:
+      			 print_string("\nInvalid choice...!");
+       			 break;
+}}
+	
 
 void display(){
 		int choose;
-
-     
      while(1){
-
 	print_string("\n");
+            init_vga_CH( YELLOW);
 	print_string("\n                         Devious Programmer OS ");
 	print_string("\n                      *****************************");
+ init_vga_CH( BRIGHT_MAGENTA);
 	print_string("\n");
-	print_string("\n");
-	print_string("\n1- calculator.");
-	print_string("\n2- Exit.");
+	print_string("\n\n");
+	print_string("\n  1-calculator.");
+    print_string("\n  2- Weight.");
+	print_string("\n  3- convert decimal to binary.");
+	print_string("\n  4- Exit.");
         print_string("\n");
-	print_string("\n\nEnter your choice : ");
+
+      
+        init_vga_CH(  BRIGHT_GREEN);
+	print_string("\n\n Enter your choice : ");
         choose = read_int();
 	switch(choose){
 		case 1:
+			
 			clear_screen();
        		        calculator();
 			break;
 		case 2:
+			
+		clear_screen();
+       		        weight();
+			break;
+
+		case 3:
+			clear_screen();
+			binary();
+			break;
+			 
+		case 4:
+ 
 			 sleep(CALC_SLEEP*3);
 			 clear_screen();
        			 print_string("\n\n  Exited...");
+  init_vga_CH(YELLOW);
+
              print_string("\n\n\n\n\n\n\n\n                  **************************************************");
+  init_vga_CH(BRIGHT_CYAN);
 			 print_string("\n\n                      Thank you for using our Simple operating system  ...!! ");
              print_string("\n\n                       Made by Devious Programmer Team :)                     "); 
              print_string("\n\n                        Supervisor by : Dr.Hazem Elbaz                         ");
+  init_vga_CH(YELLOW);
              print_string("\n\n                  *************************************************");
            
 			 return 0;
 
 			 break;
 		default:
+                           init_vga_CH(  BRIGHT_RED);
        		        print_string("\nInvalid choice...!");
                         break;
 		}
-	 print_string("\n\nPress any key to reload screen...");
-   	 getchar();
-   	 clear_screen();
+  init_vga_CH( BRIGHT_GREEN);
+print_string("\n\nPress any key to reload screen...");
+    getchar();
+    clear_screen();}
 
-  }}
-
+}
 void kernel_entry()
 {
   init_vga(BRIGHT_CYAN , DARK_GREY);
+//display();
+while (1)
+{
+
+                                                                                                  init_vga_CH(WHITE);
+                           print_string("\n\n\n  \n\n\n \n  \n\n \n\n                              ++++++++++++++++++++++++++++++++++++++++");
+   init_vga_CH(YELLOW);
+               print_string(" \n                              +    Welcome to Devoius Programmer OS  +");
+   init_vga_CH(WHITE);
+                 print_string("  \n                              ++++++++++++++++++++++++++++++++++++++++");
+
+                   init_vga_CH( BRIGHT_GREEN);
+    print_string("\n\n\n\n\n\n \n\n\n\n\n Press any key to reload screen...");
+    getchar();
+    clear_screen();
+ 
+  init_vga(BRIGHT_CYAN , DARK_GREY);
 display();
 }
+}
+
+
 
